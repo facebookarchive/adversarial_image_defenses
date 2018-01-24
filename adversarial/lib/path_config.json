@@ -1,0 +1,7 @@
+{
+  "DATA_ROOT": "/tmp/adverarial_dataset",
+  "QUILTING_ROOT": "/tmp/adverarial_dataset",
+  "MODELS_ROOT": "/tmp/adverarial_dataset",
+  "IMAGENET_DIR1": "",
+  "IMAGENET_DIR2": ""
+}

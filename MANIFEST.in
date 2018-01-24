@@ -1,0 +1,14 @@
+include README.md
+include setup.py
+include MANIFEST.in
+
+include adversarial/*.py
+include adversarial/lib/*.py
+include adversarial/lib/datasets/*.py
+include adversarial/lib/models/*.py
+include adversarial/lib/path_config.json
+exclude adversarial/test/*.py
+
+recursive-include adversarial/lib/transformations  *.py *.h *.cpp *.patch
+recursive-include adversarial/examples *
+recursive-include adversarial/test *.png
