@@ -61,7 +61,6 @@ class AttackType(Enum):
 QUILTING_PATCH_SIZE = 5
 TVM_WEIGHT = 0.03
 PIXEL_DROP_RATE = 0.5
-# TODO: Get rid of all other methods
 TVM_METHOD = 'bregman'
 
 # Data params
@@ -112,7 +111,9 @@ MODELS = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152'
 def get_adv_params(args, defense_idx=0):
 
     if args.attack_type is None:
-        assert args.adv_strength is None and args.learning_rate is None
+        assert args.adv_strength is None and args.learning_rate is None, \
+            ("Either adversarial strength or learning rate needs to be provided"
+                " when attack_type is not defined")
 
     if args.adversary_to_generate:
         adversary = args.adversary_to_generate

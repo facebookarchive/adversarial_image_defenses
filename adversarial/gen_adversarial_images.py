@@ -147,7 +147,6 @@ def generate_adversarial_images(args):
         "\"{}\" adversary_to_generate not defined".format(args.adversary_to_generate)
 
     defense_name = None if not args.defenses else args.defenses[0]
-    # defense = get_defense(defense_name, args)
     data_indices = _get_data_indices(args)
     data_type = args.data_type if args.data_type == "train" else "valid"
     dataset = load_dataset(args, data_type, None, data_indices=data_indices)
@@ -253,6 +252,11 @@ def main():
         "operation to run can't be None"
     assert OperationType.has_value(args.operation), \
         "\"{}\" operation not defined".format(args.operation)
+    if args.attack_type == str(constants.AttackType.WHITEBOX):
+        assert args.defenses is not None, \
+            "For whitebox attacks, atleast one defense is required"
+    elif args.defenses is not None:
+        print("Warning: Defenses will be unused for non whitebox attacks")
 
     if args.operation == str(OperationType.GENERATE_ADVERSARIAL):
         generate_adversarial_images(args)

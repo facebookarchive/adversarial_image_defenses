@@ -170,8 +170,8 @@ def classify_images(args):
         all_defense_probs = all_defense_probs[0]
     # Calculate top1 and top5 accuracy
     prec1, prec5 = accuracy(all_defense_probs, targets, topk=(1, 5))
-    print('=' * 50)
-    print('Results for model={}, attack={}, ensemble_type={} '.format(
+    print('=' * 60)
+    print('| Results for model={}, attack={}, ensemble_type={} '.format(
         args.model, args.adversary, args.ensemble))
     prec1 = prec1[0]
     prec5 = prec5[0]

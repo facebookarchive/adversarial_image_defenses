@@ -211,7 +211,7 @@ class ImageTarFile(data.Dataset):
      Attributes:
         classes (list): List of the class names.
         class_to_idx (dict): Dict with items (class_name, class_index).
-        imgs (list): List of (tar memberr_name, taget class index) tuples
+        imgs (list): List of (tar member_name, taget class index) tuples
     """
 
     def __init__(self, tar_index_file, path_prefix='', transform=None,
@@ -231,9 +231,9 @@ class ImageTarFile(data.Dataset):
             _imgs = make_dataset(tar_file, class_to_idx, path_prefix)
             imgs += _imgs  # NOTE: Does this need to be sorted again by target?
             img2tarfile += [idx] * len(_imgs)
-            tar_file_list.append(tar_file.tar_dir)
+            tar_file_list.append(tar_file.tarfile)
         if len(imgs) == 0:
-            raise(RuntimeError("Found 0 images in " + len(tar_dir_obj) +
+            raise(RuntimeError("Found 0 images in " + str(len(tar_dir_obj.tarfies)) +
                                 " TAR files.\n" +
                                "Supported image extensions are: " +
                                ",".join(IMG_EXTENSIONS)))

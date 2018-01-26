@@ -12,7 +12,7 @@ from lib.datasets.transform_dataset import TransformDataset
 
 # Initialize transformations to be applied to dataset
 def setup_transformations(args, data_type, defense, crop=None):
-    if args.preprocessed_data:
+    if 'preprocessed_data' in args and args.preprocessed_data:
         assert defense is not None, (
             "If data is already pre processed for defenses then "
             "defenses can't be None")
@@ -23,7 +23,7 @@ def setup_transformations(args, data_type, defense, crop=None):
     # setup transformation without adversary
     if 'adversary' not in args or args.adversary is None:
         if (data_type == 'train'):
-            if args.preprocessed_data:
+            if 'preprocessed_data' in args and args.preprocessed_data:
                 # Defenses are already applied on randomly cropped images
                 transform.append(torch_trans.Scale(args.data_params['IMAGE_SIZE']))
             else:
@@ -35,7 +35,7 @@ def setup_transformations(args, data_type, defense, crop=None):
 
         else:  # validation
             # No augmentation for validation
-            if not args.preprocessed_data:
+            if 'preprocessed_data' not in args or not args.preprocessed_data:
                 transform.append(torch_trans.Scale(args.data_params['IMAGE_SCALE_SIZE']))
                 transform.append(torch_trans.CenterCrop(
                     args.data_params['IMAGE_SIZE']))
@@ -47,7 +47,8 @@ def setup_transformations(args, data_type, defense, crop=None):
 
         # Apply defenses at runtime (VERY SLOW)
         #  Prefer pre-processing and saving data, and then using it
-        if not args.preprocessed_data and defense is not None:
+        if ('preprocessed_data' in args and not args.preprocessed_data and
+                defense is not None):
             transform = transform + [defense]
 
     else:  # Adversarial images
@@ -62,7 +63,7 @@ def setup_transformations(args, data_type, defense, crop=None):
         if not args.preprocessed_data and defense is not None:
             transform.append(defense)
 
-    if args.normalize:
+    if 'normalize' in args and args.normalize:
         transform.append(
             torch_trans.Normalize(mean=args.data_params['MEAN_STD']['MEAN'],
                                     std=args.data_params['MEAN_STD']['STD']))

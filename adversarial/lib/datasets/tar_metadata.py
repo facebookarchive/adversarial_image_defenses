@@ -25,7 +25,7 @@ class TarDirMetaData(object):
     def add_file(self, tarfile):
         assert isinstance(tarfile, TarFileMetadata)
         self.tarfiles.append(tarfile)
-        for class_name in tarfile.get_classes():
+        for class_name in tarfile.classes:
             if class_name not in self.classes:
                 self.classes.add(class_name)
 
@@ -49,7 +49,7 @@ class TarFileMetadata(object):
     def add_file(self, file_metadata):
         assert isinstance(file_metadata, DataFileMetadata)
         self.files.append(file_metadata)
-        filename = file_metadata.get_filename()
+        filename = file_metadata.filename
         class_name = extract_classname_from_member(filename)
         if class_name not in self.classes:
             self.classes.add(class_name)

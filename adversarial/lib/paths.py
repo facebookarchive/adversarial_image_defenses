@@ -137,17 +137,17 @@ def get_img_dir(args,
     if 'adversary' not in args or not args.adversary:
         if 'preprocessed_data' not in args or not args.preprocessed_data:
             dir_name = 'train' if data_type == 'train' else 'val'
-            img_dir = os.path.join(args.imagenet_dir, dir_name)
+            img_dir = str(os.path.join(args.imagenet_dir, dir_name))
         # Data is preprocessed for defenses like tvm, quilting
         else:
             # this is index_file stored as img_dir
-            img_dir = _get_preprocessed_tar_index_dir(args, data_type, epoch)
+            img_dir = str(_get_preprocessed_tar_index_dir(args, data_type, epoch))
 
     # If needs to work on pre-generated adversarial images
     else:
-        img_dir = args.adversarial_root
+        img_dir = str(args.adversarial_root)
 
-    assert os.path.isdir(img_dir), \
+    assert os.path.isdir(img_dir) or os.path.isfile(img_dir), \
         "{} doesn't exist".format(img_dir)
 
     return img_dir

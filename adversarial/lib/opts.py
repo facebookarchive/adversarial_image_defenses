@@ -63,7 +63,7 @@ def _setup_common_args(parser):
                                 'tar train/val files')
     parser.add_argument('--tar_index_dir', default=TAR_INDEX_DIR, type=str, metavar='N',
                         help='Path for directory with processed tar index files')
-    parser.add_argument('--tar_prefix', default='/tmp/imagenet_transformed',
+    parser.add_argument('--tar_prefix', default='tmp/imagenet_transformed',
                         type=str, metavar='N',
                         help='Path prefix in all tar files')
     parser.add_argument('--quilting_index_root', default=QUILTING_ROOT,
@@ -302,6 +302,10 @@ def _parse_quilting_patch_opts():
     parser.add_argument('--index_file', default='/tmp/tmp.faiss', type=str, metavar='N',
                         help='filename in which to save faiss index')
     args = parser.parse_args()
+    args.data_params = {
+        'IMAGE_SIZE': 224,
+        'IMAGE_SCALE_SIZE': 256,
+    }
     return args
 
 

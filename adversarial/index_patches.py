@@ -88,7 +88,7 @@ def create_faiss_patches(args):
 
     # load image dataset:
     print('| set up image loader...')
-    image_dataset = load_dataset(args, 'train', None, with_transformation=False)
+    image_dataset = load_dataset(args, 'train', None, with_transformation=True)
     image_dataset.imgs = image_dataset.imgs[:20000]  # we don't need all images
 
     # gather image patches:
