@@ -11,9 +11,19 @@ from os.path import isdir, isfile, join, basename
 import tarfile
 from lib.datasets.tar_metadata import (TarDirMetaData, TarFileMetadata,
                                         DataFileMetadata, extract_classname_from_member)
-import cPickle as pickle
 from PIL import Image
-import cStringIO
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
+if sys.version_info[0] == 3:  # for python3
+    from io import StringIO
+    py3 = True
+else:
+    from cStringIO import StringIO
+    py3 = False
+
 
 IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG',
@@ -156,7 +166,10 @@ def default_loader(tarfile_path, datafile_metadata):
     assert isinstance(tarfile_path, str)
     assert isinstance(datafile_metadata, DataFileMetadata)
     buffer = tar_lookup(tarfile_path, datafile_metadata)
-    img = Image.open(cStringIO.StringIO(buffer))
+    if py3:
+        img = Image.open(StringIO.read(StringIO(buffer)))
+    else:
+        img = Image.open(StringIO.StringIO(buffer))
     return img.convert('RGB')
 
 

@@ -12,11 +12,16 @@ from __future__ import unicode_literals
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
-import urllib
 import os
 import subprocess
 import zipfile
-
+import sys
+if sys.version_info[0] == 3:  # for python3
+    import urllib.request as urllib
+    py3 = True
+else:  # for python2
+    import urllib as urllib
+    py3 = False
 
 ext_code_download = True
 
@@ -92,8 +97,12 @@ cython_ext = Extension(str('tv_bregman'),
                        )
 extensions.append(cython_ext)
 
-requirements = ['pillow', 'torchvision', 'progressbar', 'scipy', 'scikit-image',
+requirements = ['pillow', 'torchvision', 'scipy', 'scikit-image',
                 'Cython', 'enum34']
+if py3:
+    requirements += ['progressbar33']
+else:
+    requirements += ['progressbar']
 
 
 # cython Extension needs numpy include dir path
