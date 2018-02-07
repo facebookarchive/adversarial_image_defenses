@@ -17,11 +17,13 @@ if pkgutil.find_loader("adversarial") is not None:
     from adversarial.gen_transformed_images import generate_transformed_images
     from adversarial.classify_images import classify_images
     from adversarial.train_model import train_model
+    from adversarial.index_patches import create_faiss_patches
 else:
     from gen_adversarial_images import generate_adversarial_images
     from gen_transformed_images import generate_transformed_images
     from classify_images import classify_images
     from train_model import train_model
+    from index_patches import create_faiss_patches
 
 from lib import opts
 import os
@@ -29,6 +31,7 @@ import os
 
 # Generate adversarial images
 def _generate_adversarial_images():
+    print("=" * 30 + "GENERATING ADVERSARIAL IMAGES" + "=" * 30)
     # load default args for adversary functions
     args = opts.parse_args(opts.OptType.ADVERSARIAL)
     # edit default args
@@ -48,6 +51,7 @@ def _generate_adversarial_images():
 
 # Apply transformations
 def _generate_transformed_images():
+    print("=" * 30 + "GENERATING IMAGE TRANSFORMATIONS" + "=" * 30)
     # load default args for transformation functions
     args = opts.parse_args(opts.OptType.TRANSFORMATION)
     # edit default args
@@ -70,6 +74,7 @@ def _generate_transformed_images():
 
 
 def _classify_images():
+    print("=" * 30 + "CLASSIFYING" + "=" * 30)
     # classify images without any attack or defense
     args = opts.parse_args(opts.OptType.CLASSIFY)
 
@@ -89,6 +94,7 @@ def _classify_images():
 
 
 def _train_model():
+    print("=" * 30 + "TRAINING" + "=" * 30)
     args = opts.parse_args(opts.OptType.TRAIN)
 
     # edit default args
@@ -98,12 +104,27 @@ def _train_model():
     args.model = "resnet50"
     args.normalize = True  # apply normalization on input data
     args.resume = True  # Resume training from checkpoint if available
+    args.end_epoch = 10
 
     train_model(args)
 
 
+# Generate patches and index for quilting
+def _index_patches():
+    print("=" * 30 + "GENERATING QUILTING PATCHES AND INDICES" + "=" * 30)
+    args = opts.parse_args(opts.OptType.QUILTING_PATCHES)
+    args.num_patches = 10000
+    args.quilting_patch_size = 5
+    args.index_file = str(os.path.join(args.quilting_index_root,
+        "index_{}.faiss".format(args.quilting_patch_size)))
+    args.patches_file = str(os.path.join(args.quilting_patch_root,
+        "patches_{}.pickle".format(args.quilting_patch_size)))
+    create_faiss_patches(args)
+
+
 if __name__ == '__main__':
     _generate_adversarial_images()
+    _index_patches()
     _generate_transformed_images()
     _train_model()
     _classify_images()

@@ -148,7 +148,8 @@ def get_img_dir(args,
         img_dir = str(args.adversarial_root)
 
     assert os.path.isdir(img_dir) or os.path.isfile(img_dir), \
-        "{} doesn't exist".format(img_dir)
+        "Data directory {} doesn't exist. Update the IMAGENET_DIR1 in the \
+            config file with correct path".format(img_dir)
 
     return img_dir
 

@@ -27,6 +27,7 @@ try:
 except ImportError:
     from io import BytesIO
 from lib.constants import DefenseType
+import os
 
 
 def _quantize_img(im, depth=8):
@@ -80,8 +81,17 @@ def get_defense(defense_name, args):
     elif defense_name == str(DefenseType.QUILTING):
         # load faiss index:
         import faiss
-        print('| load quilting patch data...')
         patches_filename, index_filename = get_quilting_filepaths(args)
+        # If quilting patches doesn't exist, then create them
+        assert (os.path.isfile(patches_filename) and
+                os.path.isfile(index_filename)), (
+            "ERROR: No quilting patch data found at {}. \n"
+            "No patch index data found at {}.\n"
+            "Generate quilting patches using index_patches.py."
+            "See demo.py for example"
+            .format(patches_filename, index_filename))
+
+        print('| Loading quilting patch data from {} ...'.format(patches_filename))
         with open(patches_filename, 'rb') as fread:
             patches = pickle.load(fread)
             patch_size = int(math.sqrt(patches.size(1) / 3))

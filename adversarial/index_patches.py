@@ -37,21 +37,25 @@ def gather_patches(image_dataset, num_patches, patch_size, patch_transform=None)
     # gather patches (TODO: speed this up):
     patches, n = [], 0
     num_images = len(image_dataset)
-    bar = progressbar.ProgressBar(num_images)
+    bar = progressbar.ProgressBar(num_patches)
     bar.start()
-    data_loader = get_data_loader(image_dataset)
+    data_loader = get_data_loader(image_dataset, batchsize=1, workers=1)
     for (img, _) in data_loader:
-        n += 1
         img = img.squeeze()
         for _ in range(0, max(1, int(num_patches / num_images))):
+            n += 1
             y = random.randint(0, img.size(1) - patch_size)
             x = random.randint(0, img.size(2) - patch_size)
             patch = img[:, y:y + patch_size, x:x + patch_size]
             if patch_transform is not None:
                 patch = patch_transform(patch)
             patches.append(patch)
-        if n % 100 == 0:
-            bar.update(n)
+            if n % 100 == 0:
+                bar.update(n)
+            if n >= num_patches:
+                break
+        if n >= num_patches:
+            break
 
     # copy all patches into single tensor:
     patches = torch.stack(patches, dim=0)
@@ -97,7 +101,8 @@ def create_faiss_patches(args):
     # gather image patches:
     print('| gather image patches...')
     patches = gather_patches(
-        image_dataset, args.num_patches, args.patch_size, patch_transform=None,
+        image_dataset, args.num_patches, args.quilting_patch_size,
+        patch_transform=None,
     )
 
     # build faiss index:

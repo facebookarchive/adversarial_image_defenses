@@ -30,6 +30,9 @@ QUILTING_ROOT = path_config["QUILTING_ROOT"]
 MODELS_ROOT = path_config["MODELS_ROOT"]
 if not path_config["IMAGENET_DIR1"]:
     IMAGENET_DIR1 = os.path.join(os.path.dirname(__file__), "../test/images")
+    print("\nWARNING: IMAGENET_DIR1 is not defined in path_config.json, "
+            "so loading test images from {}".format(IMAGENET_DIR1))
+    print("To load imagenet data update path IMAGENET_DIR1 in path_config.json\n")
 else:
     IMAGENET_DIR1 = path_config["IMAGENET_DIR1"]
 if not path_config["IMAGENET_DIR2"]:
@@ -291,8 +294,7 @@ def _parse_adversarial_opts():
 def _parse_quilting_patch_opts():
     # set input arguments:
     parser = argparse.ArgumentParser(description='Build FAISS index of patches')
-    parser.add_argument('--patch_size', default=5, type=int, metavar='N',
-                        help='size of patches (default: 5)')
+    parser = _setup_common_args(parser)
     parser.add_argument('--num_patches', default=1000000, type=int, metavar='N',
                         help='number of patches in index (default: 1M)')
     parser.add_argument('--pca_dims', default=64, type=int, metavar='N',
@@ -342,8 +344,10 @@ def parse_args(opt_type):
         if os.path.isdir(path):
             args.imagenet_dir = str(path)
             break
-        else:
-            print("Can't find imagenet data at path: " + path)
+    assert hasattr(args, "imagenet_dir"), (
+        "ERROR: Can't find imagenet data at paths: {}. \n "
+        "Update the IMAGENET_DIR1 in path_config.json with the correct path"
+        .format(imagenet_dirs))
 
     print("| Input args are:")
     print(args)

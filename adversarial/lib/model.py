@@ -79,7 +79,7 @@ def get_model(args, load_checkpoint=False, defense_name=None, training=False):
     assert (args.model in constants.MODELS), ("%s not a supported model" % args.model)
     model, start_epoch, optimizer = None, None, None
     # load model:
-    print('| loading model...')
+    print('| loading model {} ...'.format(args.model))
     if args.model == 'inception_v4':
         assert "NUM_CLASSES" in args.data_params, \
             "Inception parameters should have number of classes defined"
