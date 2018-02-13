@@ -63,8 +63,8 @@ def gather_patches(image_dataset, num_patches, patch_size, patch_transform=None)
     return patches
 
 
-# function that trains faiss index on patches:
-def index_patches(patches, pca_dims=64):
+# function that trains faiss index on patches and saves them:
+def index_patches(patches, index_file, pca_dims=64):
 
     # settings for faiss:
     num_lists, M, num_bits = 200, 16, 8
@@ -87,7 +87,10 @@ def index_patches(patches, pca_dims=64):
     patches = patches.numpy()
     faiss_index.train(patches)
     faiss_index.add(patches)
-    return faiss_index, sub_index
+
+    # save faiss index:
+    print('| writing faiss index to %s' % index_file)
+    faiss.write_index(faiss_index, index_file)
 
 
 # run all the things:
@@ -107,16 +110,12 @@ def create_faiss_patches(args):
 
     # build faiss index:
     print('| training faiss index...')
-    faiss_index, sub_index = index_patches(patches, pca_dims=args.pca_dims)
-    # NOTE: Keep reference to sub_index to prevent it from being GC'ed
+    index_patches(patches, args.index_file, pca_dims=args.pca_dims)
 
-    # save faiss index and patches:
-    print('| writing faiss index to %s' % args.index_file)
-    faiss.write_index(faiss_index, args.index_file)
+    # save patches:
     with open(args.patches_file, 'wb') as fwrite:
         print('| writing patches to %s' % args.patches_file)
         pickle.dump(patches, fwrite, pickle.HIGHEST_PROTOCOL)
-    print('| done.')
 
 
 # run:
