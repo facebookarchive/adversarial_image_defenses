@@ -35,11 +35,13 @@ if ext_code_download:
     # Download inception_v4 and inceptionresnetv2
     MODEL_DIR = str("adversarial/lib/models")
     INCEPTION_V4_URL = ("https://raw.githubusercontent.com/Cadene/"
-                        "tensorflow-model-zoo.torch/master/inceptionv4/"
-                        "pytorch_load.py")
+                        "tensorflow-model-zoo.torch/"
+                        "f43005c4b4cdd745e9788b22e182c91453c54daf/inceptionv4"
+                        "/pytorch_load.py")
     INCEPTION_RESNET_V2_URL = ("https://raw.githubusercontent.com/Cadene/"
-                                "tensorflow-model-zoo.torch/master/"
-                                "inceptionresnetv2/pytorch_load.py")
+                               "tensorflow-model-zoo.torch/"
+                               "f43005c4b4cdd745e9788b22e182c91453c54daf/"
+                               "inceptionresnetv2/pytorch_load.py")
     urlopener = urllib.URLopener()
     urlopener.retrieve(INCEPTION_V4_URL, os.path.join(MODEL_DIR, "inceptionv4.py"))
     urlopener.retrieve(INCEPTION_RESNET_V2_URL,
@@ -47,7 +49,8 @@ if ext_code_download:
 
     # Download denoising code for tv_bregman from scikit-image
     DENOISE_URL = ("https://raw.githubusercontent.com/scikit-image/scikit-image/"
-                    "master/skimage/restoration/_denoise_cy.pyx")
+                   "902a9a68add274c4125a358b29e3263b9d94f686/skimage/"
+                   "restoration/_denoise_cy.pyx")
     urlopener = urllib.URLopener()
     urlopener.retrieve(DENOISE_URL, os.path.join(TRANSFORMATION_DIR, "_denoise_cy.pyx"))
     # Apply patch to support TVM compressed sensing
