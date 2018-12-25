@@ -27,7 +27,7 @@ The code implements the following four approaches to generating adversarial imag
 
 
 # Installation
-To use this code, first install Python, [PyTorch](www.pytorch.org), and [Faiss](https://github.com/facebookresearch/faiss) (to perform image quilting). We tested the code using Python 2.7 and PyTorch v0.2.0; your mileage may vary when using other versions.
+To use this code, first install Python, [PyTorch](www.pytorch.org), and [Faiss](https://github.com/facebookresearch/faiss) (to perform image quilting). We tested the code using Python 2.7, PyTorch v0.2.0, and scikit-image 0.11; your mileage may vary when using other versions.
 
 Pytorch can be installed using the instructions [here](http://pytorch.org/). Faiss is required to run the image quilting algorithm; it is not automatically included because faiss does not have a pip support and because it requires configuring BLAS and LAPACK flags, as described [here](https://github.com/facebookresearch/faiss/blob/master/INSTALL.md). Please install faiss using the instructions given [here](https://github.com/facebookresearch/faiss).
 
