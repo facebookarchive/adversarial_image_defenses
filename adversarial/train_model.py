@@ -57,8 +57,11 @@ def train_model(args):
 
     # set up criterion:
     criterion = nn.CrossEntropyLoss()
+    
     if args.device == 'gpu':
+        # Call .cuda() method on model
         criterion = criterion.cuda()
+        model = model.cuda()
 
     loaders = {}
 

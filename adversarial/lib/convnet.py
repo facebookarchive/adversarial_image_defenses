@@ -61,6 +61,9 @@ def train(model, criterion, optimizer, data_loader_hook=None,
             if is_gpu:
                 cpu_targets = targets.clone()
                 targets = targets.cuda(async=True)
+                # Make sure the imgs are converted to cuda tensor too
+                imgs = imgs.cuda(async=True)
+                
             imgsvar = torch.autograd.Variable(imgs)
             tgtsvar = torch.autograd.Variable(targets)
 
@@ -97,6 +100,9 @@ def _test(model, data_loader, return_probability=False):
     assert isinstance(model, torch.nn.Module)
     assert isinstance(data_loader, torch.utils.data.dataloader.DataLoader)
 
+    # are we on CPU or GPU?
+    is_gpu = not isinstance(model, torch.nn.backends.thnn.THNNFunctionBackend)
+        
     # loop over data:
     model.eval()
     precs1, precs5, num_batches, num_total = [], [], 0, 0
@@ -104,6 +110,13 @@ def _test(model, data_loader, return_probability=False):
     bar = progressbar.ProgressBar(len(data_loader))
     bar.start()
     for num_batches, (imgs, targets) in enumerate(data_loader):
+
+            # copy data to GPU:
+        if is_gpu:
+            cpu_targets = targets.clone()
+            targets = targets.cuda(async=True)
+            # Make sure the imgs are converted to cuda tensor too
+            imgs = imgs.cuda(async=True)
 
         # perform prediction:
         imgsvar = torch.autograd.Variable(imgs.squeeze(), volatile=True)
@@ -116,7 +129,7 @@ def _test(model, data_loader, return_probability=False):
                 torch.cat((all_targets, targets), dim=0))
 
         # measure accuracy:
-        prec1, prec5 = accuracy(pred, targets, topk=(1, 5))
+        prec1, prec5 = accuracy(pred, cpu_targets, topk=(1, 5))
         precs1.append(prec1[0] * targets.size(0))
         precs5.append(prec5[0] * targets.size(0))
         num_total += imgs.size(0)

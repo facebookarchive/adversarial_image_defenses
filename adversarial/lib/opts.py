@@ -315,7 +315,7 @@ def parse_args(opt_type):
     assert isinstance(opt_type, OptType), \
         '{} not an instance of OptType Enum'.format(opt_type)
     assert DATA_ROOT, \
-        "{} DATA_ROOT can't be empty. Update in path_config.py with correct value"
+        "{} DATA_ROOT can't be empty. Update in path_config.json with correct value"
 
     if opt_type == OptType.QUILTING_PATCHES:
         args = _parse_quilting_patch_opts()
