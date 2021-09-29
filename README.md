@@ -210,14 +210,14 @@ Alternatively, run `python classify_images.py`. In addition to the [common argum
 ### Pre-trained models
 We provide pre-trained models that were trained on ImageNet images that were processed using total variation minimization (TVM) or image quilting can be downloaded from the following links (set the `models_root` argument to the path that contains these model model files):
 
-- [ResNet-50_model trained on quilted images](https://s3.amazonaws.com/adversarial-images/models/resnet50_quilting.tar.gz)
-- [ResNet-50_model trained on TVM images](https://s3.amazonaws.com/adversarial-images/models/resnet50_tvm.tar.gz)
-- [ResNet-101_model trained on quilted images](https://s3.amazonaws.com/adversarial-images/models/resnet101_quilting.tar.gz)
-- [ResNet-101_model trained on TVM images](https://s3.amazonaws.com/adversarial-images/models/resnet101_tvm.tar.gz)
-- [DenseNet-169_model trained on quilted images](https://s3.amazonaws.com/adversarial-images/models/densenet169_quilting.tar.gz)
-- [DenseNet-169_model trained on TVM images](https://s3.amazonaws.com/adversarial-images/models/densenet169_tvm.tar.gz)
-- [Inception-v4_model trained on quilted images](https://s3.amazonaws.com/adversarial-images/models/inception_v4_quilting.tar.gz)
-- [Inception-v4_model trained on TVM images](https://s3.amazonaws.com/adversarial-images/models/inception_v4_tvm.tar.gz)
+- [ResNet-50_model trained on quilted images]
+- [ResNet-50_model trained on TVM images]
+- [ResNet-101_model trained on quilted images]
+- [ResNet-101_model trained on TVM images]
+- [DenseNet-169_model trained on quilted images])
+- [DenseNet-169_model trained on TVM images]
+- [Inception-v4_model trained on quilted images]
+- [Inception-v4_model trained on TVM images]
 
 
 <a name="common_args"></a>
